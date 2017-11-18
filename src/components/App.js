@@ -1,22 +1,8 @@
 import React from 'react';
-import { Text, View, ScrollView, Modal, Button} from 'react-native';
-import styles from './AppStyle';
-import api from "./utillities/api";
-import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
-
-let radio_props = [
-    {label: '0', value: 0 },
-    {label: '1', value: 1 },
-    {label: '2', value: 2 },
-    {label: '3', value: 3 },
-    {label: '4', value: 4 },
-    {label: '5', value: 5 },
-    {label: '6', value: 6 },
-    {label: '7', value: 7 },
-    {label: '8', value: 8 },
-    {label: '9', value: 9 },
-    {label: '10', value: 10 }
-];
+import { Text, View, ScrollView, Modal} from 'react-native';
+import styles from '../styles/AppStyle';
+import api from "../utillities/api";
+import RadioButtons from "./RadioButtons";
 
 export default class App extends React.Component {
 
@@ -25,11 +11,9 @@ export default class App extends React.Component {
         this.state = {
             playList: [],
             modalVisible: false,
-            value: 0
+            selectedText: 0
         }
     }
-
-
 
     componentWillMount() {
         api.getPlayList().then((res) => {
@@ -55,22 +39,12 @@ export default class App extends React.Component {
                     >
                         <View style={styles.modalView}>
                             <View>
-                                <RadioForm
-                                    radio_props={radio_props}
-                                    initial={0}
-                                    onPress={(value) => {this.setState({value:value})}}
-                                    style={styles.radioForm}
-                                    labelStyle={styles.radioFormLabel}
-                                    buttonStyle={styles.radioFormButton}
-                                />
-                                <Button
-                                    onPress={() => {
-                                        this.setModalVisible(!this.state.modalVisible)
-                                    }}
-                                    title="Close"
-                                    color="#841584"
-                                    accessibilityLabel="Close"
-                                    style={styles.closeButton}
+                                <RadioButtons
+                                    currentValue = {this.state['text_' + this.state.selectedText] ? this.state['text_' + this.state.selectedText] : 0}
+                                    sendData={(val) => {
+                                            this.state['text_' + this.state.selectedText] =  val.props;
+                                            this.setModalVisible(!this.state.modalVisible);
+                                        }}
                                 />
                             </View>
                         </View>
@@ -78,14 +52,15 @@ export default class App extends React.Component {
                     {
                         this.state.playList.map((y, i) => {
                             return (
-                                <View style={{flexDirection: 'row'}}  key={i}>
+                                <View style={styles.songRow}  key={i}>
                                     <View style={[styles.songText, styles.artist]}>
                                         <Text>{y.track.artists[0].name}</Text>
                                         <Text>{y.track.name}</Text>
                                     </View>
                                     <Text style={[styles.pointText]}  onPress={() => {
+                                        this.state.selectedText = i;
                                         this.setModalVisible(!this.state.modalVisible)
-                                    }}>10</Text>
+                                    }}>{this.state['text_' + i] ? this.state['text_' + i] : 0}</Text>
                                 </View>
                             );
                         })

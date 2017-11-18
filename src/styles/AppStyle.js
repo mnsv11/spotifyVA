@@ -5,6 +5,9 @@ export default StyleSheet.create({
     songText: {
         width:'85%'
     },
+    songRow: {
+        flexDirection: 'row'
+    },
     pointText: {
         marginTop:17,
         paddingRight:10,
@@ -30,22 +33,28 @@ export default StyleSheet.create({
         marginLeft:3,
         marginRight:3
     },
+
+    //Modal view
     modalView: {
         marginTop: 22
     },
+
+    //Radio button in modal view
     radioForm:{
         alignItems: 'flex-start',
         marginLeft: 15,
-        height:'94%',
+        height:'100%',
     },
     radioFormButton: {
-        marginBottom: 20,
-        fontSize: 20
+        marginTop:14,
+        marginRight: 10
     },
     radioFormLabel: {
-
+        marginTop: 5,
         fontSize: 20
     },
+
+    //Close button in modal view
     closeButton:{
         height: 100
     }
