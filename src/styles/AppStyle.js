@@ -70,20 +70,39 @@ export default StyleSheet.create({
     },
 
     resultView:{
-        height: "92%"
+        height: "90%"
     },
 
     resultList: {
-        flexDirection: 'row',
-        fontSize: 10
+        flexDirection: 'row'
     },
 
     resultName:{
-        width: '80%',
+        width: '90%',
         marginLeft: 10
     },
 
     text:{
-        fontSize:15
+        fontSize:18
+    },
+
+    //Other
+    border:{
+        marginTop: 10,
+        borderBottomColor: "black",
+        borderBottomWidth: 1,
+    },
+
+    topScoreName: {
+        marginLeft: 10,
+        marginBottom: 10
+    },
+
+    topScoreText:{
+      width: "93%"
+    },
+
+    topScorePoints:{
+        paddingTop: 10
     }
 });
