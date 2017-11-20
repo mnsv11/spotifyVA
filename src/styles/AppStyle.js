@@ -2,8 +2,13 @@ const React = require('react-native');
 const {StyleSheet} = React;
 
 export default StyleSheet.create({
+
+    scrollView: {
+        marginTop: 30,
+    },
     songText: {
-        width:'85%'
+        marginLeft: 10,
+        width:'80%'
     },
     songRow: {
         flexDirection: 'row'
@@ -16,12 +21,6 @@ export default StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 20,
         width:'15%'
-    },
-    margin: {
-        marginTop: 30,
-        marginBottom: 30,
-        marginLeft:5,
-        marginRight:3
     },
     artist: {
         marginTop: 15
@@ -55,7 +54,36 @@ export default StyleSheet.create({
     },
 
     //Close button in modal view
-    closeButton:{
-        height: 100
+    resultsButtonView:{
+        marginTop: 10
+
+    },
+
+    //Result view
+    resultTitle:{
+        marginLeft: 10,
+        fontSize:20,
+        fontWeight: "bold"
+    },
+    mainView:{
+        height: "100%"
+    },
+
+    resultView:{
+        height: "92%"
+    },
+
+    resultList: {
+        flexDirection: 'row',
+        fontSize: 10
+    },
+
+    resultName:{
+        width: '80%',
+        marginLeft: 10
+    },
+
+    text:{
+        fontSize:15
     }
 });
