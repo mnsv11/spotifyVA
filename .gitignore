@@ -2,3 +2,4 @@ android/
 ios/
 node_modules/
 .idea/inspectionProfiles/
+/android/app/my-release-key.keystore

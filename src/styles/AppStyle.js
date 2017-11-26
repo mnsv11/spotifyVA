@@ -66,7 +66,7 @@ export default StyleSheet.create({
         fontWeight: "bold"
     },
     mainView:{
-        height: "100%"
+
     },
 
     resultView:{
@@ -104,5 +104,9 @@ export default StyleSheet.create({
 
     topScorePoints:{
         paddingTop: 10
+    },
+
+    resultsCloseButton: {
+
     }
 });

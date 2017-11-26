@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Text, View, Button } from 'react-native';
+import { Text, View, Button, ScrollView } from 'react-native';
 import styles from '../styles/AppStyle';
 import api from "../utillities/api";
 
@@ -9,37 +9,63 @@ export default class Results extends Component {
         super(props);
         this.state = {
             results: [],
-            topScoreSong: []
+            topScoreSong: [],
+            lowScoreSong: []
         };
 
         this.props.playList.sort(this.sortList);
+
         let currentId = this.props.playList[0].added_by.id;
         let score = 0;
-        let currentScore = 0;
+        let currentTopScore = 0;
+        let currentLowScore = 10;
 
         for (let i = 0; i < this.props.playList.length; i++) {
             if (this.props.playList[i].track.artists[0].name !== "Rebecca Black" && this.props.playList[i].track.name !== "Friday") {
 
-                if(this.props.playList[i].points === currentScore){
+                if(this.props.playList[i].points === currentTopScore){
                     this.state.topScoreSong.push({
                         artist: this.props.playList[i].track.artists[0].name,
                         song: this.props.playList[i].track.name,
                         point: this.props.playList[i].points
                     })
-                } else if(this.props.playList[i].points > currentScore) {
+                } else if(this.props.playList[i].points > currentTopScore) {
                     this.state.topScoreSong = [];
                     this.state.topScoreSong.push({
                         artist: this.props.playList[i].track.artists[0].name,
                         song: this.props.playList[i].track.name,
                         point: this.props.playList[i].points
                     });
-                    currentScore = this.props.playList[i].points;
+                    currentTopScore = this.props.playList[i].points;
                 }
 
+                if(this.props.playList[i].points === currentLowScore){
+                    this.state.lowScoreSong.push({
+                        artist: this.props.playList[i].track.artists[0].name,
+                        song: this.props.playList[i].track.name,
+                        point: this.props.playList[i].points
+                    })
+                } else if(this.props.playList[i].points < currentLowScore) {
+                    this.state.lowScoreSong = [];
+                    this.state.lowScoreSong.push({
+                        artist: this.props.playList[i].track.artists[0].name,
+                        song: this.props.playList[i].track.name,
+                        point: this.props.playList[i].points
+                    });
+                    currentLowScore = this.props.playList[i].points;
+                }
 
                 if (currentId === this.props.playList[i].added_by.id) {
                     score = score + this.props.playList[i].points;
+                    if(this.props.playList.length === i+1){
+                        this.state.results.push({
+                            id: currentId,
+                            totalScore: score
+                        });
+                    }
+
                 } else {
+
                     this.state.results.push({
                         id: currentId,
                         totalScore: score
@@ -51,15 +77,14 @@ export default class Results extends Component {
             }
         }
 
-        console.log(this.state.topScoreSong)
-
         api.getUserProfile(this.state.results).then(() => {
+
             this.state.results.sort(this.sortResult);
+
             this.setState({
                 results: this.state.results
             })
         });
-
     }
 
 
@@ -95,7 +120,7 @@ export default class Results extends Component {
 
     render(){
         return (
-            <View style={styles.mainView}>
+            <ScrollView style={styles.mainView}>
 
                 <Text style={styles.resultTitle}>Resultat</Text>
                 <View style={styles.resultView}>
@@ -129,16 +154,37 @@ export default class Results extends Component {
                             );
                         })
                     }
+                    <View style={styles.border}/>
+                    <Text style={styles.resultTitle}>Låt med lägst poäng</Text>
+                    {
+                        this.state.lowScoreSong.map((y, i) => {
+                            return (
+                                <View key={i}>
+                                    <View style={[styles.resultList, styles.topScoreName]}>
+                                        <View style={styles.topScoreText}>
+                                            <Text style={styles.text}>{y.artist}</Text>
+                                            <Text style={styles.text}>{y.song}</Text>
+                                        </View>
+                                        <Text style={[styles.text, styles.topScorePoints]}>{y.point}</Text>
+                                    </View>
+
+                                </View>
+                            );
+                        })
+                    }
+                    <View style={styles.resultsCloseButton}>
+                        <Button
+                            onPress={() => {
+                                this.props.sendData();
+                            }}
+                            title="Close"
+                            color="#841584"
+                            accessibilityLabel="Results"
+                        />
+                    </View>
                 </View>
-                <Button
-                    onPress={() => {
-                        this.props.sendData();
-                    }}
-                    title="Close"
-                    color="#841584"
-                    accessibilityLabel="Results"
-                />
-            </View>
+
+            </ScrollView>
         )
     }
 }

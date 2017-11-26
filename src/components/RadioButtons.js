@@ -17,8 +17,6 @@ let radio_props = [
     {label: '10', value: 10 }
 ];
 
-
-
 export default class RadioButtons extends Component {
     constructor(props){
         super(props);
